@@ -59,3 +59,44 @@ Hard-code a dictionary containing the 12 standard seasons:
 * **Accuracy:** Prioritize Delta E calculations over simple RGB comparisons.
 * **Performance:** Implement basic caching for image processing results to avoid redundant downloads of the same product image.
 * **UI:** Use a clean, minimalist aesthetic. Ensure the "Match" indicator is highly visible on mobile.
+
+---
+
+## 6. Project Directory Structure
+irl/
+├── manage.py
+├── .env                    # API keys and secret variables
+├── .gitignore              # To ignore venv, __pycache__, and .env
+├── AGENTS.md               # The development spec for AI agents
+├── README.md               # Project documentation
+├── requirements.txt        # List of dependencies
+│
+├── core/                   # Project configuration
+│   ├── __init__.py
+│   ├── settings.py         
+│   ├── urls.py             
+│   └── wsgi.py
+│
+├── apps/                   
+│   └── matcher/            # Main application logic
+│       ├── migrations/
+│       ├── static/         
+│       │   └── css/
+│       │       └── styles.css
+│       ├── templates/      
+│       │   └── matcher/
+│       │       ├── base.html
+│       │       ├── index.html
+│       │       └── results.html
+│       ├── __init__.py
+│       ├── constants.py    # 12-Season HEX Dictionary
+│       ├── models.py       
+│       ├── services/       
+│       │   ├── __init__.py
+│       │   └── asos_api.py # ASOS API wrapper
+│       ├── utils/          
+│       │   ├── __init__.py
+│       │   └── color_engine.py  # OpenCV & K-Means logic
+│       ├── urls.py         
+│       └── views.py        
+└── venv/
