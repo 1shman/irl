@@ -23,10 +23,3 @@ A Django-powered web application that helps users find clothing that matches the
 ### Prerequisites
 - Python 3.10+
 - A RapidAPI account (for ASOS API access)
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/yourusername/seasonal-color-matcher.git](https://github.com/yourusername/seasonal-color-matcher.git)
-   cd seasonal-color-matcher
