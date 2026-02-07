@@ -32,3 +32,5 @@ Set these in `.env` (do not commit the file):
 - `DJANGO_SECURE_SSL_REDIRECT` (`true` or `false`, production)
 - `DJANGO_SECURE_HSTS_SECONDS` (integer, production)
 - `RAPIDAPI_KEY` (ASOS access via RapidAPI)
+- `RAPIDAPI_HOST` (optional, default `asos2.p.rapidapi.com`)
+- `RAPIDAPI_ASOS_BASE_URL` (optional override for ASOS search endpoint)

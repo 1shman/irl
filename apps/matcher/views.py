@@ -3,7 +3,7 @@ from django.views.decorators.http import require_http_methods
 
 from .constants import SEASONAL_PALETTES
 from .services.asos_api import search_products
-from .utils.color_engine import extract_dominant_color, is_seasonal_match
+from .utils.color_engine import extract_dominant_color, find_best_season
 
 
 def index(request):
@@ -20,26 +20,39 @@ def search(request):
     results = []
     error = None
 
-    if query and season in SEASONAL_PALETTES:
+    debug = (request.GET.get("debug") or request.POST.get("debug") or "").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+    if query:
         try:
-            products = search_products(query, limit=12)
+            products = search_products(query, limit=5)
         except Exception as exc:  # noqa: BLE001 - surfaces API errors to UI
             products = []
             error = f"ASOS API error: {exc}"
 
-        palette = SEASONAL_PALETTES.get(season, [])
-
-        for product in products[:15]:
+        for product in products:
             image_url = product.get("image_url")
             dominant_hex = None
-            match = False
+            best_season = None
+            best_distance = None
+            debug_error = None
             if image_url:
                 try:
                     dominant = extract_dominant_color(image_url)
                     dominant_hex = dominant.hex_value
-                    match = is_seasonal_match(dominant_hex, palette)
-                except Exception:
-                    match = False
+                    best_season, best_distance = find_best_season(dominant_hex, SEASONAL_PALETTES)
+                except Exception as exc:
+                    best_season = None
+                    best_distance = None
+                    if debug:
+                        debug_error = f"Color extraction failed: {exc}"
+            else:
+                if debug:
+                    debug_error = "Missing image URL"
 
             results.append(
                 {
@@ -48,11 +61,13 @@ def search(request):
                     "image_url": image_url,
                     "price": product.get("price"),
                     "dominant_hex": dominant_hex,
-                    "is_match": match,
+                    "best_season": best_season,
+                    "best_distance": best_distance,
+                    "debug_error": debug_error if debug else None,
                 }
             )
-    elif query or season:
-        error = "Please provide a search query and choose a season."
+    else:
+        error = "Please provide a search query."
 
     context = {
         "query": query,

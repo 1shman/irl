@@ -27,7 +27,12 @@ if os.path.exists(_env_path):
             if not _line or _line.startswith("#") or "=" not in _line:
                 continue
             _key, _val = _line.split("=", 1)
-            os.environ.setdefault(_key.strip(), _val.strip())
+            _val = _val.strip()
+            if (_val.startswith("'") and _val.endswith("'")) or (
+                _val.startswith('"') and _val.endswith('"')
+            ):
+                _val = _val[1:-1]
+            os.environ.setdefault(_key.strip(), _val)
 
 
 # Quick-start development settings - unsuitable for production

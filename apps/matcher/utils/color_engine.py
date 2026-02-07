@@ -4,13 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Iterable, Tuple
+from typing import Dict, Iterable, Tuple
 
 import cv2
 import numpy as np
 import requests
 from colormath.color_conversions import convert_color
-from colormath.color_diff import delta_e_cie1976
 from colormath.color_objects import LabColor, sRGBColor
 from sklearn.cluster import KMeans
 
@@ -42,7 +41,11 @@ def _download_image_bytes(url: str) -> bytes:
     response = requests.get(
         url,
         timeout=10,
-        headers={"User-Agent": "seasonal-color-matcher/0.1"},
+        headers={
+            "User-Agent": "seasonal-color-matcher/0.1",
+            "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+            "Referer": "https://www.asos.com/",
+        },
     )
     response.raise_for_status()
     return response.content
@@ -99,7 +102,9 @@ def calculate_delta_e(hex1: str, hex2: str) -> float:
     lab1 = convert_color(sRGBColor(*rgb1, is_upscaled=True), LabColor)
     lab2 = convert_color(sRGBColor(*rgb2, is_upscaled=True), LabColor)
 
-    return float(delta_e_cie1976(lab1, lab2))
+    # Manual Euclidean distance in Lab to avoid deprecated numpy APIs in colormath.
+    delta = np.array([lab1.lab_l - lab2.lab_l, lab1.lab_a - lab2.lab_a, lab1.lab_b - lab2.lab_b])
+    return float(np.linalg.norm(delta))
 
 
 def is_seasonal_match(extracted_hex: str, palette_hexes: Iterable[str], threshold: float = 10.0) -> bool:
@@ -108,3 +113,19 @@ def is_seasonal_match(extracted_hex: str, palette_hexes: Iterable[str], threshol
         if calculate_delta_e(extracted_hex, palette_hex) < threshold:
             return True
     return False
+
+
+def find_best_season(extracted_hex: str, palettes: Dict[str, Iterable[str]]) -> Tuple[str, float]:
+    """
+    Return the closest season and its minimum Delta E distance.
+    """
+    extracted_hex = _normalize_hex(extracted_hex)
+    best_season = ""
+    best_distance = float("inf")
+    for season, palette in palettes.items():
+        for palette_hex in palette:
+            distance = calculate_delta_e(extracted_hex, palette_hex)
+            if distance < best_distance:
+                best_distance = distance
+                best_season = season
+    return best_season, best_distance
