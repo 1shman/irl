@@ -2,5 +2,54 @@
 
 {% block content %}
   <h1 class="text-2xl font-semibold">Results</h1>
-  <p class="mt-2 text-sm text-slate-600">Results view placeholder.</p>
+  <p class="mt-2 text-sm text-slate-600">Showing matches for "{{ query }}" in {{ season }}.</p>
+
+  <form class="mt-6 space-y-3" method="get" action="{% url 'matcher:search' %}">
+    <input
+      type="text"
+      name="query"
+      value="{{ query }}"
+      placeholder="Search again"
+      class="w-full rounded border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+      required
+    >
+    <select
+      name="season"
+      class="w-full rounded border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+      required
+    >
+      <option value="">Select a season</option>
+      {% for s in seasons %}
+        <option value="{{ s }}" {% if s == season %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+    <button class="w-full rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+      Search
+    </button>
+  </form>
+
+  {% if error %}
+    <p class="mt-4 rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{{ error }}</p>
+  {% endif %}
+
+  {% if results %}
+    <div class="mt-6 grid grid-cols-2 gap-4">
+      {% for item in results %}
+        <div class="rounded border border-slate-200 bg-white p-2 shadow-sm">
+          {% if item.image_url %}
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="h-32 w-full rounded object-cover">
+          {% endif %}
+          <div class="mt-2 text-sm font-medium">{{ item.name }}</div>
+          {% if item.dominant_hex %}
+            <div class="mt-1 text-xs text-slate-600">Dominant: {{ item.dominant_hex }}</div>
+          {% endif %}
+          {% if item.is_match %}
+            <div class="mt-2 rounded bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-800">Seasonal Match</div>
+          {% else %}
+            <div class="mt-2 rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">No Match</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endblock %}

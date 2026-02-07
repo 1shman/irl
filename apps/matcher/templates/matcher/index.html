@@ -2,5 +2,33 @@
 
 {% block content %}
   <h1 class="text-2xl font-semibold">Seasonal Color Matcher</h1>
-  <p class="mt-2 text-sm text-slate-600">Phase 1 setup complete. UI will be built in Phase 3.</p>
+  <p class="mt-2 text-sm text-slate-600">Search ASOS and match items to your seasonal palette.</p>
+
+  <form class="mt-6 space-y-4" method="post" action="{% url 'matcher:search' %}">
+    {% csrf_token %}
+    <label class="block text-sm font-medium">Search</label>
+    <input
+      type="text"
+      name="query"
+      placeholder="e.g., blue polo"
+      class="w-full rounded border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+      required
+    >
+
+    <label class="block text-sm font-medium">Season</label>
+    <select
+      name="season"
+      class="w-full rounded border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+      required
+    >
+      <option value="">Select a season</option>
+      {% for season in seasons %}
+        <option value="{{ season }}">{{ season }}</option>
+      {% endfor %}
+    </select>
+
+    <button class="w-full rounded bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+      Search
+    </button>
+  </form>
 {% endblock %}

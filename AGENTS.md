@@ -45,9 +45,9 @@ Hard-code a dictionary containing the 12 standard seasons:
 - [x] Develop `calculate_delta_e(hex1, hex2)` utility.
 
 ### Phase 2: API & Integration
-- [ ] Configure RapidAPI credentials for ASOS.
-- [ ] Create `services/asos_service.py` to handle API requests.
-- [ ] Build the main search view that combines API data with the color engine.
+- [x] Configure RapidAPI credentials for ASOS.
+- [x] Create `services/asos_service.py` to handle API requests.
+- [x] Build the main search view that combines API data with the color engine.
 
 ### Phase 3: Frontend Development
 - [ ] Design "Season Selection" landing page (Mobile-first).

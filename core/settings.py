@@ -15,12 +15,11 @@ import os
 import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR / "apps"))
 
 # Load .env without extra dependencies
-_env_path = os.path.join(BASE_DIR, ".env")
+_env_path = BASE_DIR / ".env"
 if os.path.exists(_env_path):
     with open(_env_path, "r", encoding="utf-8") as _env_file:
         for _line in _env_file:

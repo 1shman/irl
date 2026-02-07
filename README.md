@@ -31,3 +31,4 @@ Set these in `.env` (do not commit the file):
 - `DJANGO_ALLOWED_HOSTS` (comma-separated, e.g. `localhost,127.0.0.1`)
 - `DJANGO_SECURE_SSL_REDIRECT` (`true` or `false`, production)
 - `DJANGO_SECURE_HSTS_SECONDS` (integer, production)
+- `RAPIDAPI_KEY` (ASOS access via RapidAPI)
