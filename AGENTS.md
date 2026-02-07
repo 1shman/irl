@@ -39,10 +39,10 @@ Hard-code a dictionary containing the 12 standard seasons:
 ## 4. Implementation Roadmap
 
 ### Phase 1: Environment & Utils
-- [ ] Initialize Django project and app structure.
-- [ ] Create `constants.py` with 12-season HEX dictionaries.
-- [ ] Develop `extract_dominant_color(url)` utility using OpenCV/KMeans.
-- [ ] Develop `calculate_delta_e(hex1, hex2)` utility.
+- [x] Initialize Django project and app structure.
+- [x] Create `constants.py` with 12-season HEX dictionaries.
+- [x] Develop `extract_dominant_color(url)` utility using OpenCV/KMeans.
+- [x] Develop `calculate_delta_e(hex1, hex2)` utility.
 
 ### Phase 2: API & Integration
 - [ ] Configure RapidAPI credentials for ASOS.
