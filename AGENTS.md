@@ -63,6 +63,7 @@ Hard-code a dictionary containing the 12 standard seasons:
 ---
 
 ## 6. Project Directory Structure
+```text
 irl/
 ├── manage.py
 ├── .env                    # API keys and secret variables
@@ -100,3 +101,4 @@ irl/
 │       ├── urls.py         
 │       └── views.py        
 └── venv/
+```
