@@ -23,3 +23,11 @@ A Django-powered web application that helps users find clothing that matches the
 ### Prerequisites
 - Python 3.10+
 - A RapidAPI account (for ASOS API access)
+
+### Environment Variables
+Set these in `.env` (do not commit the file):
+- `DJANGO_SECRET_KEY` (required)
+- `DJANGO_DEBUG` (`true` or `false`)
+- `DJANGO_ALLOWED_HOSTS` (comma-separated, e.g. `localhost,127.0.0.1`)
+- `DJANGO_SECURE_SSL_REDIRECT` (`true` or `false`, production)
+- `DJANGO_SECURE_HSTS_SECONDS` (integer, production)
