@@ -13,3 +13,4 @@ scipy==1.17.0
 sqlparse==0.5.5
 threadpoolctl==3.6.0
 urllib3==2.6.3
+colormath==3.0.0
